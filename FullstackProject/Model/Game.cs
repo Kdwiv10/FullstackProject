@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FullstackProject.Model;
 
 public partial class Game
 {
+    [Required]
     public int GameId { get; set; }
 
     public string Title { get; set; } = null!;

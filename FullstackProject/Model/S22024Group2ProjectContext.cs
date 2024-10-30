@@ -79,9 +79,7 @@ public partial class S22024Group2ProjectContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false);
-            entity.Property(e => e.PasswordHash)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+          
         });
 
         modelBuilder.Entity<Game>(entity =>

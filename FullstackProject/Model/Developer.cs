@@ -11,7 +11,7 @@ public partial class Developer
 
     public string Email { get; set; } = null!;
 
-    public string PasswordHash { get; set; } = null!;
+    
 
     public string? ContactInfo { get; set; }
 

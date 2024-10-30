@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FullstackProject.Model;
 
 public partial class GameLibrary
 {
+    [Key]
     public int LibraryId { get; set; }
 
     public int? UserId { get; set; }

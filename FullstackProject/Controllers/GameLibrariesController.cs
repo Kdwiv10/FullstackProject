@@ -6,27 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FullstackProject.Model;
-using Microsoft.AspNetCore.Authorization;
-//added GamesController 30/10/2024 Karman Dwivedi
+
 namespace FullstackProject.Controllers
 {
-    public class GamesController : Controller
+    public class GameLibrariesController : Controller
     {
         private readonly S22024Group2ProjectContext _context;
 
-        public GamesController(S22024Group2ProjectContext context)
+        public GameLibrariesController(S22024Group2ProjectContext context)
         {
             _context = context;
         }
 
-        // GET: Games
+        // GET: GameLibraries
         public async Task<IActionResult> Index()
         {
-            var s22024Group2ProjectContext = _context.Games.Include(g => g.Developer);
+            var s22024Group2ProjectContext = _context.GameLibraries.Include(g => g.Game).Include(g => g.User);
             return View(await s22024Group2ProjectContext.ToListAsync());
         }
 
-        // GET: Games/Details/5
+        // GET: GameLibraries/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,43 +33,45 @@ namespace FullstackProject.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Games
-                .Include(g => g.Developer)
-                .FirstOrDefaultAsync(m => m.GameId == id);
-            if (game == null)
+            var gameLibrary = await _context.GameLibraries
+                .Include(g => g.Game)
+                .Include(g => g.User)
+                .FirstOrDefaultAsync(m => m.LibraryId == id);
+            if (gameLibrary == null)
             {
                 return NotFound();
             }
 
-            return View(game);
+            return View(gameLibrary);
         }
 
-        // GET: Games/Create
-        [Authorize(Roles = "Administrator,Developer")]
+        // GET: GameLibraries/Create
         public IActionResult Create()
         {
-            ViewData["DeveloperId"] = new SelectList(_context.Developers, "DeveloperId", "DeveloperId");
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameId");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
             return View();
         }
 
-        // POST: Games/Create
+        // POST: GameLibraries/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GameId,Title,Description,ReleaseDate,Price,Genre,DeveloperId")] Game game)
+        public async Task<IActionResult> Create([Bind("LibraryId,UserId,GameId,DateAdded,PricePaid")] GameLibrary gameLibrary)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(game);
+                _context.Add(gameLibrary);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DeveloperId"] = new SelectList(_context.Developers, "DeveloperId", "DeveloperId", game.DeveloperId);
-            return View(game);
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameId", gameLibrary.GameId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", gameLibrary.UserId);
+            return View(gameLibrary);
         }
 
-        // GET: Games/Edit/5
+        // GET: GameLibraries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,23 +79,24 @@ namespace FullstackProject.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Games.FindAsync(id);
-            if (game == null)
+            var gameLibrary = await _context.GameLibraries.FindAsync(id);
+            if (gameLibrary == null)
             {
                 return NotFound();
             }
-            ViewData["DeveloperId"] = new SelectList(_context.Developers, "DeveloperId", "DeveloperId", game.DeveloperId);
-            return View(game);
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameId", gameLibrary.GameId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", gameLibrary.UserId);
+            return View(gameLibrary);
         }
 
-        // POST: Games/Edit/5
+        // POST: GameLibraries/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GameId,Title,Description,ReleaseDate,Price,Genre,DeveloperId")] Game game)
+        public async Task<IActionResult> Edit(int id, [Bind("LibraryId,UserId,GameId,DateAdded,PricePaid")] GameLibrary gameLibrary)
         {
-            if (id != game.GameId)
+            if (id != gameLibrary.LibraryId)
             {
                 return NotFound();
             }
@@ -103,12 +105,12 @@ namespace FullstackProject.Controllers
             {
                 try
                 {
-                    _context.Update(game);
+                    _context.Update(gameLibrary);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GameExists(game.GameId))
+                    if (!GameLibraryExists(gameLibrary.LibraryId))
                     {
                         return NotFound();
                     }
@@ -119,11 +121,12 @@ namespace FullstackProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DeveloperId"] = new SelectList(_context.Developers, "DeveloperId", "DeveloperId", game.DeveloperId);
-            return View(game);
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameId", gameLibrary.GameId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", gameLibrary.UserId);
+            return View(gameLibrary);
         }
 
-        // GET: Games/Delete/5
+        // GET: GameLibraries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,35 +134,36 @@ namespace FullstackProject.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Games
-                .Include(g => g.Developer)
-                .FirstOrDefaultAsync(m => m.GameId == id);
-            if (game == null)
+            var gameLibrary = await _context.GameLibraries
+                .Include(g => g.Game)
+                .Include(g => g.User)
+                .FirstOrDefaultAsync(m => m.LibraryId == id);
+            if (gameLibrary == null)
             {
                 return NotFound();
             }
 
-            return View(game);
+            return View(gameLibrary);
         }
 
-        // POST: Games/Delete/5
+        // POST: GameLibraries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var game = await _context.Games.FindAsync(id);
-            if (game != null)
+            var gameLibrary = await _context.GameLibraries.FindAsync(id);
+            if (gameLibrary != null)
             {
-                _context.Games.Remove(game);
+                _context.GameLibraries.Remove(gameLibrary);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GameExists(int id)
+        private bool GameLibraryExists(int id)
         {
-            return _context.Games.Any(e => e.GameId == id);
+            return _context.GameLibraries.Any(e => e.LibraryId == id);
         }
     }
 }
