@@ -1,0 +1,21 @@
+﻿
+
+body{
+    background-color: gray;
+}
+h1, h2 {
+    color: #ff7f00;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+}
+
+.header-text {
+    text-align: center;
+    padding: 20px 0;
+}
+
+

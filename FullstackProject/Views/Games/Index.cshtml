@@ -1,0 +1,44 @@
+﻿@model List<FullstackProject.Model.Game>
+
+@{
+    ViewData["Title"] = "Games";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Games</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model[0].Title)</th>
+            <th>@Html.DisplayNameFor(model => model[0].Description)</th>
+            <th>@Html.DisplayNameFor(model => model[0].ReleaseDate)</th>
+            <th>@Html.DisplayNameFor(model => model[0].Price)</th>
+            <th>@Html.DisplayNameFor(model => model[0].Genre)</th>
+            <th>@Html.DisplayNameFor(model => model[0].Developer.DeveloperId)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <td>@game.Title</td>
+                <td>@game.Description</td>
+               @*  <td>@game.ReleaseDate.ToString("d")</td> *@
+                <td>@game.Price</td>
+                <td>@game.Genre</td>
+                <td>@game.Developer.DeveloperId</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@game.GameId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@game.GameId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@game.GameId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Create">Create New Game</a>
+</div>
