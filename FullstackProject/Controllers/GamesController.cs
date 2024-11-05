@@ -46,7 +46,7 @@ namespace FullstackProject.Controllers
         }
 
         // GET: Games/Create
-        [Authorize(Roles = "Administrator,Developer")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["DeveloperId"] = new SelectList(_context.Developers, "DeveloperId", "DeveloperId");
@@ -124,6 +124,7 @@ namespace FullstackProject.Controllers
         }
 
         // GET: Games/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
