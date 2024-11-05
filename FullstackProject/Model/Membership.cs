@@ -11,9 +11,9 @@ public partial class Membership
 
     public string? Type { get; set; }
 
-    public DateOnly? StartDate { get; set; }
+    public int? Price { get; set; }
 
-    public DateOnly? EndDate { get; set; }
+    public string? Description { get; set; }
 
     public virtual User? User { get; set; }
 }

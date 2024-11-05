@@ -15,7 +15,17 @@ public partial class S22024Group2ProjectContext : DbContext
     {
     }
 
-    public virtual DbSet<Cart> Carts { get; set; }
+    public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+
+    public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+
+    public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+
+    public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+
+    public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+
+    public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
 
     public virtual DbSet<Developer> Developers { get; set; }
 
@@ -35,32 +45,82 @@ public partial class S22024Group2ProjectContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    //Removed Warning
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=citizen.manukautech.info,6304;Database=S22024_Group2_Project;UID=S22024_Group2;PWD=fBit$95124;encrypt=true;trustservercertificate=true");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=citizen.manukautech.info,6304;Database=S22024_Group2_Project;User Id=S22024_Group2;Password=fBit$95124;Encrypt=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Cart>(entity =>
+        modelBuilder.Entity<AspNetRole>(entity =>
         {
-            entity.HasKey(e => e.CartId).HasName("PK__Cart__51BCD797A3AEE056");
+            entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                .IsUnique()
+                .HasFilter("([NormalizedName] IS NOT NULL)");
 
-            entity.ToTable("Cart");
+            entity.Property(e => e.Name).HasMaxLength(256);
+            entity.Property(e => e.NormalizedName).HasMaxLength(256);
+        });
 
-            entity.Property(e => e.CartId)
-                .ValueGeneratedNever()
-                .HasColumnName("CartID");
-            entity.Property(e => e.GameId).HasColumnName("GameID");
-            entity.Property(e => e.UserId).HasColumnName("UserID");
+        modelBuilder.Entity<AspNetRoleClaim>(entity =>
+        {
+            entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
 
-            entity.HasOne(d => d.Game).WithMany(p => p.Carts)
-                .HasForeignKey(d => d.GameId)
-                .HasConstraintName("FK__Cart__GameID__693CA210");
+            entity.HasOne(d => d.Role).WithMany(p => p.AspNetRoleClaims).HasForeignKey(d => d.RoleId);
+        });
 
-            entity.HasOne(d => d.User).WithMany(p => p.Carts)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Cart__UserID__68487DD7");
+        modelBuilder.Entity<AspNetUser>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
+
+            entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                .IsUnique()
+                .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+            entity.Property(e => e.Email).HasMaxLength(256);
+            entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+            entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+            entity.Property(e => e.UserName).HasMaxLength(256);
+
+            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "AspNetUserRole",
+                    r => r.HasOne<AspNetRole>().WithMany().HasForeignKey("RoleId"),
+                    l => l.HasOne<AspNetUser>().WithMany().HasForeignKey("UserId"),
+                    j =>
+                    {
+                        j.HasKey("UserId", "RoleId");
+                        j.ToTable("AspNetUserRoles");
+                        j.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
+                    });
+        });
+
+        modelBuilder.Entity<AspNetUserClaim>(entity =>
+        {
+            entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserClaims).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUserLogin>(entity =>
+        {
+            entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+            entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
+
+            entity.Property(e => e.LoginProvider).HasMaxLength(128);
+            entity.Property(e => e.ProviderKey).HasMaxLength(128);
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserLogins).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<AspNetUserToken>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+            entity.Property(e => e.LoginProvider).HasMaxLength(128);
+            entity.Property(e => e.Name).HasMaxLength(128);
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserTokens).HasForeignKey(d => d.UserId);
         });
 
         modelBuilder.Entity<Developer>(entity =>
@@ -79,21 +139,26 @@ public partial class S22024Group2ProjectContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false);
-          
         });
 
         modelBuilder.Entity<Game>(entity =>
         {
             entity.HasKey(e => e.GameId).HasName("PK__Games__2AB897DDDAE95024");
 
+            entity.HasIndex(e => e.DeveloperId, "IX_Games_DeveloperID");
+
             entity.Property(e => e.GameId)
                 .ValueGeneratedNever()
                 .HasColumnName("GameID");
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.DeveloperId).HasColumnName("DeveloperID");
+            entity.Property(e => e.DeveloperName)
+                .HasMaxLength(10)
+                .IsUnicode(false);
             entity.Property(e => e.Genre)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.IsAvailableOnMembership).HasColumnType("text");
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.Title)
                 .HasMaxLength(100)
@@ -109,6 +174,10 @@ public partial class S22024Group2ProjectContext : DbContext
             entity.HasKey(e => e.LibraryId).HasName("PK__GameLibr__A13647BF43F008E5");
 
             entity.ToTable("GameLibrary");
+
+            entity.HasIndex(e => e.GameId, "IX_GameLibrary_GameID");
+
+            entity.HasIndex(e => e.UserId, "IX_GameLibrary_UserID");
 
             entity.Property(e => e.LibraryId)
                 .ValueGeneratedNever()
@@ -130,11 +199,14 @@ public partial class S22024Group2ProjectContext : DbContext
         {
             entity.HasKey(e => e.MembershipId).HasName("PK__Membersh__92A785990BEA4EC2");
 
-            entity.HasIndex(e => e.UserId, "UQ__Membersh__1788CCADDB5B030F").IsUnique();
+            entity.HasIndex(e => e.UserId, "UQ__Membersh__1788CCADDB5B030F")
+                .IsUnique()
+                .HasFilter("([UserID] IS NOT NULL)");
 
             entity.Property(e => e.MembershipId)
                 .ValueGeneratedNever()
                 .HasColumnName("MembershipID");
+            entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.Type)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -148,6 +220,8 @@ public partial class S22024Group2ProjectContext : DbContext
         modelBuilder.Entity<Payment>(entity =>
         {
             entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A5810BBE4EE");
+
+            entity.HasIndex(e => e.PurchaseId, "IX_Payments_PurchaseID");
 
             entity.Property(e => e.PaymentId)
                 .ValueGeneratedNever()
@@ -166,6 +240,10 @@ public partial class S22024Group2ProjectContext : DbContext
         modelBuilder.Entity<Purchase>(entity =>
         {
             entity.HasKey(e => e.PurchaseId).HasName("PK__Purchase__6B0A6BDE536E93D6");
+
+            entity.HasIndex(e => e.GameId, "IX_Purchases_GameID");
+
+            entity.HasIndex(e => e.UserId, "IX_Purchases_UserID");
 
             entity.Property(e => e.PurchaseId)
                 .ValueGeneratedNever()
@@ -186,6 +264,10 @@ public partial class S22024Group2ProjectContext : DbContext
         modelBuilder.Entity<Review>(entity =>
         {
             entity.HasKey(e => e.ReviewId).HasName("PK__Reviews__74BC79AEB172D10E");
+
+            entity.HasIndex(e => e.GameId, "IX_Reviews_GameID");
+
+            entity.HasIndex(e => e.UserId, "IX_Reviews_UserID");
 
             entity.Property(e => e.ReviewId)
                 .ValueGeneratedNever()
@@ -219,6 +301,8 @@ public partial class S22024Group2ProjectContext : DbContext
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK__Users__1788CCAC0F3D84C5");
+
+            entity.HasIndex(e => e.RoleId, "IX_Users_RoleID");
 
             entity.HasIndex(e => e.Email, "UQ__Users__A9D105349FA7B6FF").IsUnique();
 

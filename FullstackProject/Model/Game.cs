@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace FullstackProject.Model;
 
 public partial class Game
 {
-    [Required]
     public int GameId { get; set; }
 
     public string Title { get; set; } = null!;
 
     public string? Description { get; set; }
 
-    public DateOnly? ReleaseDate { get; set; } 
+    public DateOnly? ReleaseDate { get; set; }
 
     public decimal? Price { get; set; }
 
@@ -21,7 +19,9 @@ public partial class Game
 
     public int? DeveloperId { get; set; }
 
-    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
+    public string? DeveloperName { get; set; }
+
+    public string? IsAvailableOnMembership { get; set; }
 
     public virtual Developer? Developer { get; set; }
 

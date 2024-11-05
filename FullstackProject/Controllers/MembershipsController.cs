@@ -56,7 +56,7 @@ namespace FullstackProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MembershipId,UserId,Type,StartDate,EndDate")] Membership membership)
+        public async Task<IActionResult> Create([Bind("MembershipId,UserId,Type,Price,Description")] Membership membership)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace FullstackProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MembershipId,UserId,Type,StartDate,EndDate")] Membership membership)
+        public async Task<IActionResult> Edit(int id, [Bind("MembershipId,UserId,Type,Price,Description")] Membership membership)
         {
             if (id != membership.MembershipId)
             {

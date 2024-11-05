@@ -11,8 +11,6 @@ public partial class Developer
 
     public string Email { get; set; } = null!;
 
-    
-
     public string? ContactInfo { get; set; }
 
     public virtual ICollection<Game> Games { get; set; } = new List<Game>();

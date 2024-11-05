@@ -19,8 +19,6 @@ public partial class User
 
     public int? RoleId { get; set; }
 
-    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
-
     public virtual ICollection<GameLibrary> GameLibraries { get; set; } = new List<GameLibrary>();
 
     public virtual Membership? Membership { get; set; }
