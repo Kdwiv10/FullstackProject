@@ -1,0 +1,58 @@
+﻿.register-div {
+    text-align: center;
+}
+
+.title-div {
+    text-align: left;
+    max-width: 500px;
+    margin: auto; 
+    padding: 40px 0px;
+}
+
+.google-login-btn {
+    background-color: white;
+    border: 2px solid #ccc;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.google-login-btn:hover {
+    border-color: #4285F4;
+    color: white;
+}
+
+.login-box {
+    max-width: 100%; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+#account .form-floating {
+    margin-bottom: 1rem;
+}
+
+/* Style the "Forgot password?" link like the "Register Now" button */
+.forgot-btn {
+    text-decoration: none;
+    color: #007bff;
+    text-align: right;
+}
+
+#forgot-password,
+a[asp-page="./Register"] {
+    color: #007bff;
+}
+
+.hover-link {
+    text-decoration: none;
+    color: navy;
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+.hover-link:hover {
+    color: #007bff; 
+    text-decoration: underline;
+}
