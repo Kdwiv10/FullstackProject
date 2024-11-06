@@ -69,7 +69,7 @@ namespace FullstackProject.Controllers
             ViewData["DeveloperId"] = new SelectList(_context.Developers, "DeveloperId", "DeveloperId", game.DeveloperId);
             return View(game);
         }
-
+        [Authorize(Roles = "Admin,Developer")]
         // GET: Games/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FullstackProject.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FullstackProject.Controllers
 {
@@ -45,6 +46,7 @@ namespace FullstackProject.Controllers
         }
 
         // GET: Memberships/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
