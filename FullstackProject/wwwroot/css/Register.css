@@ -1,4 +1,4 @@
-﻿.login-box {
+﻿.register-box {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -8,7 +8,7 @@
     margin-top: 120px;
 }
 
-.google-login-btn {
+.google-register-btn {
     background-color: white;
     border: 2px solid #ccc;
     padding: 10px 30px;
@@ -17,10 +17,10 @@
     transition: all 0.3s ease;
 }
 
-.google-login-btn:hover {
+.google-register-btn:hover {
     border-color: #4285F4;
     color: white;
-}   
+}
 
 .hover-link {
     text-decoration: none;
@@ -29,6 +29,20 @@
 }
 
 .hover-link:hover {
-    color: #007bff; 
+    color: #007bff;
     text-decoration: underline;
+}
+
+#register-submit {
+    background-color: orange;
+    color: black;
+    border: none; 
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#register-submit:hover {
+    background-color: black; 
+    color: orange; 
+    cursor: pointer; 
 }

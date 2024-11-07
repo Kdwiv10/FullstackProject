@@ -2,7 +2,7 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Sign in";
+    ViewData["Title"] = "Login";
 }
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
 </head>
 <body>
     <!-- Login box Section 06/11/2024 Kanemana Witana -->
-    <div class="login-box container py-4">
+    <div class="login-box container py-3" style="width: 450px;">
         <div class="row justify-content-center">
             <!-- Login title Section 06/11/2024 Kanemana Witana -->
             <div class="col-12 text-center mb-4">
@@ -41,7 +41,7 @@
                                 @foreach (var provider in Model.ExternalLogins!)
                                 {
                                     <button type="submit" class="btn btn-outline-primary mb-2" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                                        Log in with @provider.DisplayName
+                                        Login with @provider.DisplayName
                                         <img src="~/Images/Google Logo.png" alt="Google logo" width="20" height="20" class="ms-2" />
                                     </button>
                                 }
@@ -59,7 +59,7 @@
             </div>
 
             <!-- User input details Section 06/11/2024 Kanemana Witana -->
-            <div class="col-md-6">
+            <div class="col-md-6" style="width: 400px;">
                 <form id="account" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class="form-floating mb-3">
@@ -77,12 +77,12 @@
                         <label for="rememberMe" class="form-check-label">
                             @Html.DisplayNameFor(m => m.Input.RememberMe)
                         </label>
-                        <a class="forgot-btn" id="forgot-password" asp-page="./ForgotPassword">Forgot password?</a>
+                        <a class="hover-link" id="forgot-password" asp-page="./ForgotPassword" style="float: right;">Forgot password?</a>
                     </div>
 
                     <!-- Login button Section 06/11/2024 Kanemana Witana -->
                     <div class="d-grid gap-2">
-                        <button id="login-submit" type="submit" class="btn btn-primary btn-lg">Log in</button>
+                        <button id="login-submit" type="submit" class="btn btn-primary btn-lg">Login</button>
                     </div>
                 </form>
             </div>
@@ -91,10 +91,7 @@
         <!-- Register Section 06/11/2024 Kanemana Witana -->
         <div class="text-center mt-4">
             <p>
-                New to Shangri? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="hover-link">Register Now</a>
-            </p>
-            <p>
-                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="hover-link">Resend email confirmation</a>
+                New to Shangri? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="hover-link" style="margin-left: 10px;">Join Now</a>
             </p>
         </div>
     </div>
