@@ -32,3 +32,17 @@
     color: #007bff; 
     text-decoration: underline;
 }
+
+.custom-login-btn {
+    background-color: orange;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-login-btn:hover {
+    background-color: black;
+    color: orange;
+    cursor: pointer;
+}

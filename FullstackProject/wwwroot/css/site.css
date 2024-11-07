@@ -31,11 +31,6 @@ body {
   margin-bottom: 60px;
 }
 
-p{
-    color: white;
-    font-size:medium 50px;
-}
-
 .navbar-custom {
     background-color: #333; /* greyish black */
     overflow: hidden;

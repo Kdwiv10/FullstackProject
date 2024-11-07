@@ -7,76 +7,43 @@
 
 <h1>Games</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().ReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Genre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Developer.DeveloperId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().DeveloperName)
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReleaseDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Genre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Developer.DeveloperId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DeveloperName)
-                </td>
-                <td>
-                    <!-- Action Links -->
-                    @if (User.IsInRole("Developer") || User.IsInRole("Admin")) // Show Edit link for Developers and Admins
+
+@if (User.IsInRole("Administrator"))
+{
+    <p>
+        <a asp-action="Create">Add New Game</a>
+    </p>
+}
+
+<div class="row">
+@foreach (var item in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <!-- Display the actual Game image -->
+                <img src="@item.ImageFileName" class="card-img-top" alt="Game Image" />
+
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text"><small class="text-muted">Release Date: @string.Format(("{0:MM/dd/yyyy}"), item.ReleaseDate)</small></p>
+                    <p class="card-text"><strong>Price:</strong> @item.Price</p>
+                    <p class="card-text"><strong>Genre:</strong> @item.Genre</p>
+                    <p class="card-text"><strong>DeveloperID:</strong> @item.DeveloperId</p>
+                    <p class="card-text"><strong>Developer Name:</strong> @item.DeveloperName</p>
+                </div>
+
+                <div class="card-footer">
+                    @if (User.IsInRole("Administrator"))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.GameId">Edit</a>
+                        <a asp-action="Edit" asp-route-id="@item.GameId" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.GameId" class="btn btn-danger btn-sm">Delete</a>
                     }
-                    @if (User.IsInRole("Admin")) // Show Delete link only for Admins
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.GameId">Delete</a>
-                    }
-                    <a asp-action="Details" asp-route-id="@item.GameId">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+                    <a asp-action="Details" asp-route-id="@item.GameId" class="btn btn-info btn-sm">Details</a>
+                </div>
+            </div>
+        </div>
+}
+</div>
+
