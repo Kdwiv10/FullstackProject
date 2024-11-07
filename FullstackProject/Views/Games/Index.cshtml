@@ -14,53 +14,69 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.First().Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.First().Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                @Html.DisplayNameFor(model => model.First().ReleaseDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.First().Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Genre)
+                @Html.DisplayNameFor(model => model.First().Genre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Developer)
+                @Html.DisplayNameFor(model => model.First().Developer.DeveloperId)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().DeveloperName)
+            </th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Developer.DeveloperId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.GameId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GameId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GameId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Developer.DeveloperId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeveloperName)
+                </td>
+                <td>
+                    <!-- Action Links -->
+                    @if (User.IsInRole("Developer") || User.IsInRole("Admin")) // Show Edit link for Developers and Admins
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.GameId">Edit</a>
+                    }
+                    @if (User.IsInRole("Admin")) // Show Delete link only for Admins
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.GameId">Delete</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.GameId">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

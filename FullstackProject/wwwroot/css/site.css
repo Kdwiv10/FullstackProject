@@ -30,3 +30,23 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+p{
+    color: white;
+    font-size:medium 50px;
+}
+
+.navbar-custom {
+    background-color: #333; /* greyish black */
+    overflow: hidden;
+}
+
+    .navbar-custom .navbar-brand,
+    .navbar-custom .navbar-nav .nav-link {
+        color: orange !important; /* make text orange */
+        font-weight: bold;
+    }
+
+        .navbar-custom .navbar-nav .nav-link:hover {
+            color: #ff8c00; /* optional, darker orange for hover effect */
+        }
