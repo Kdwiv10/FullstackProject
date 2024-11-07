@@ -14,19 +14,7 @@ namespace FullstackProject.Model
         // Navigation property for User
         public virtual User? User { get; set; }
 
-        // Computed property for discount based on membership type
-        public decimal Discount
-        {
-            get
-            {
-                return Type switch
-                {
-                    "Gold" => 0.14m,   
-                    "Silver" => 0.09m, 
-                    "Bronze" => 0.06m, 
-                    _ => 0m            
-                };
+        
             }
         }
-    }
-}
+  
