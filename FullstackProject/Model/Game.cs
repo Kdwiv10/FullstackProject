@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 
 namespace FullstackProject.Model;
@@ -22,6 +23,8 @@ public partial class Game
     public string? DeveloperName { get; set; }
 
     public string? IsAvailableOnMembership { get; set; }
+
+    public string ImageFileName => $"/Images/{GameId}.jpg";
 
     public virtual Developer? Developer { get; set; }
 

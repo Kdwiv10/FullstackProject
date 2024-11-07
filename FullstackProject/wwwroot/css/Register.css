@@ -33,16 +33,16 @@
     text-decoration: underline;
 }
 
-#register-submit {
+.custom-register-btn {
     background-color: orange;
     color: black;
-    border: none; 
+    border: none;
     border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#register-submit:hover {
-    background-color: black; 
-    color: orange; 
-    cursor: pointer; 
+.custom-register-btn:hover {
+    background-color: black;
+    color: orange;
+    cursor: pointer;
 }

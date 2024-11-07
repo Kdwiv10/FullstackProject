@@ -76,13 +76,13 @@
                         <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
-                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg custom-register-btn">Register</button>
                 </form>
             </div>
 
             <!-- Login Section 06/11/2024 Kanemana Witana -->
             <div class="text-center mt-4">
-                <p style="color: black;">
+                <p>
                     Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="hover-link" style="margin-left: 10px;">Login</a>
                 </p>
             </div>
