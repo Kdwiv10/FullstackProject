@@ -1,49 +1,129 @@
 ﻿@model IEnumerable<FullstackProject.Model.Game>
 
 @{
-    ViewData["Title"] = "Store";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Game Index";
 }
 
 <h1>Games</h1>
 
+<p>
+    <a asp-action="Create">Create New </a>
+</p>
 
-@if (User.IsInRole("Administrator"))
-{
-    <p>
-        <a asp-action="Create">Add New Game</a>
-    </p>
-}
+<!-- Tabs for each Genre and All Games -->
+<ul class="nav nav-tabs" id="genreTabs" role="tablist">
+    <!-- All Games Tab -->
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="tab-all-games" data-bs-toggle="tab" data-bs-target="#all-games" type="button" role="tab" aria-controls="all-games" aria-selected="true">
+            All Games
+        </button>
+    </li>
 
-<div class="row">
-@foreach (var item in Model)
+    <!-- Genre Tabs -->
+    @foreach (var genre in Model.Select(g => g.Genre).Distinct())
     {
-        <div class="col-md-3 mb-4">
-            <div class="card h-100">
-                <!-- Display the actual Game image -->
-                <img src="@item.ImageFileName" class="card-img-top" alt="Game Image" />
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-@genre" data-bs-toggle="tab" data-bs-target="#genre-@genre" type="button" role="tab" aria-controls="genre-@genre" aria-selected="false">
+                @genre
+            </button>
+        </li>
+    }
+</ul>
+<!--Made new display for games 8/11/2024 Karman Dwivedi-->
+<!-- Tab content for All Games and Each Genre -->
+<div class="tab-content" id="genreTabsContent">
+    <!-- All Games Tab Content -->
+    <div class="tab-pane fade show active" id="all-games" role="tabpanel" aria-labelledby="tab-all-games">
+        <div class="row mt-3">
+            @if (Model.Any())
+            {
+                @foreach (var game in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="@Url.Content("~/uploads/" + game.GameId + ".jpg")" class="card-img-top" alt="@game.Title" style="height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <h5 class="card-title">@game.Title</h5>
+                                <p class="card-text">@game.Description</p>
+                                <p class="card-text">
+                                    <strong>Price:</strong> $@game.Price<br />
+                                    <strong>Release Date:</strong> @game.ReleaseDate <br />
+                                    <strong>Genre:</strong> @game.Genre <br />
+                                    <strong>Developer:</strong> @game.DeveloperName
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <!-- Action Buttons -->
+                                <a asp-action="Edit" asp-route-id="@game.GameId" class="btn btn-warning btn-sm">Edit</a>
+                                <a asp-action="Details" asp-route-id="@game.GameId" class="btn btn-info btn-sm">Details</a>
+                                <a asp-action="Delete" asp-route-id="@game.GameId" class="btn btn-danger btn-sm">Delete</a>
+                                <!-- Add to Cart button - only if available on membership -->
+                                @if (game.IsAvailableOnMembership == "Yes")
+                                {
+                                    <a asp-controller="Membership" asp-action="AddToCart" asp-route-id="@game.GameId" class="btn btn-primary btn-sm">Add To Membership</a>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-secondary btn-sm" disabled>Not Available on Membership</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">No games available.</p>
+            }
+        </div>
+    </div>
 
-                <div class="card-body">
-                    <h5 class="card-title">@item.Title</h5>
-                    <p class="card-text">@item.Description</p>
-                    <p class="card-text"><small class="text-muted">Release Date: @string.Format(("{0:MM/dd/yyyy}"), item.ReleaseDate)</small></p>
-                    <p class="card-text"><strong>Price:</strong> @item.Price</p>
-                    <p class="card-text"><strong>Genre:</strong> @item.Genre</p>
-                    <p class="card-text"><strong>DeveloperID:</strong> @item.DeveloperId</p>
-                    <p class="card-text"><strong>Developer Name:</strong> @item.DeveloperName</p>
-                </div>
-
-                <div class="card-footer">
-                    @if (User.IsInRole("Administrator"))
+    <!-- Tab Content for Each Genre -->
+    @foreach (var genre in Model.Select(g => g.Genre).Distinct())
+    {
+        <div class="tab-pane fade" id="genre-@genre" role="tabpanel" aria-labelledby="tab-@genre">
+            <div class="row mt-3">
+                @if (Model.Where(g => g.Genre == genre).Any())
+                {
+                    @foreach (var game in Model.Where(g => g.Genre == genre))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.GameId" class="btn btn-primary btn-sm">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.GameId" class="btn btn-danger btn-sm">Delete</a>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img src="@Url.Content("~/uploads/" + game.GameId + ".jpg")" class="card-img-top" alt="Game Image" style="height: 200px; object-fit: cover;" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@game.Title</h5>
+                                    <p class="card-text">@game.Description</p>
+                                    <p class="card-text">
+                                        <strong>Price:</strong> $@game.Price<br />
+                                        <strong>Release Date:</strong> @game.ReleaseDate <br />
+                                        <strong>Genre:</strong> @game.Genre <br />
+                                        <strong>Developer:</strong> @game.DeveloperName
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <!-- Action Buttons -->
+                                    <a asp-action="Edit" asp-route-id="@game.GameId" class="btn btn-warning btn-sm">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@game.GameId" class="btn btn-info btn-sm">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@game.GameId" class="btn btn-danger btn-sm">Delete</a>
+                                    <!-- Add to Cart button - only if available on membership -->
+                                    @if (game.IsAvailableOnMembership == "Yes")
+                                    {
+                                        <a asp-controller="Membership" asp-action="AddToCart" asp-route-id="@game.GameId" class="btn btn-primary btn-sm">Add To Membership</a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary btn-sm" disabled>Not Available on Membership</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
                     }
-
-                    <a asp-action="Details" asp-route-id="@item.GameId" class="btn btn-info btn-sm">Details</a>
-                </div>
+                }
+                else
+                {
+                    <p class="text-muted">No games available in this genre.</p>
+                }
             </div>
         </div>
-}
+    }
 </div>
-

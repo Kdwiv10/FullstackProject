@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FullstackProject.Model;
 using Microsoft.AspNetCore.Authorization;
-//added GamesController 30/10/2024 Karman Dwivedi
+
 namespace FullstackProject.Controllers
 {
     public class GamesController : Controller
@@ -22,8 +22,8 @@ namespace FullstackProject.Controllers
         // GET: Games
         public async Task<IActionResult> Index()
         {
-            var s22024Group2ProjectContext = _context.Games.Include(g => g.Developer);
-            return View(await s22024Group2ProjectContext.ToListAsync());
+            var gamesList = await _context.Games.Include(g => g.Developer).ToListAsync();
+            return View(gamesList);
         }
 
         // GET: Games/Details/5
@@ -54,8 +54,6 @@ namespace FullstackProject.Controllers
         }
 
         // POST: Games/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("GameId,Title,Description,ReleaseDate,Price,Genre,DeveloperId")] Game game)
@@ -69,8 +67,9 @@ namespace FullstackProject.Controllers
             ViewData["DeveloperId"] = new SelectList(_context.Developers, "DeveloperId", "DeveloperId", game.DeveloperId);
             return View(game);
         }
-        [Authorize(Roles = "Admin,Developer")]
+
         // GET: Games/Edit/5
+        [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,8 +87,6 @@ namespace FullstackProject.Controllers
         }
 
         // POST: Games/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("GameId,Title,Description,ReleaseDate,Price,Genre,DeveloperId")] Game game)
@@ -121,41 +118,6 @@ namespace FullstackProject.Controllers
             }
             ViewData["DeveloperId"] = new SelectList(_context.Developers, "DeveloperId", "DeveloperId", game.DeveloperId);
             return View(game);
-        }
-
-        // GET: Games/Delete/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var game = await _context.Games
-                .Include(g => g.Developer)
-                .FirstOrDefaultAsync(m => m.GameId == id);
-            if (game == null)
-            {
-                return NotFound();
-            }
-
-            return View(game);
-        }
-
-        // POST: Games/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var game = await _context.Games.FindAsync(id);
-            if (game != null)
-            {
-                _context.Games.Remove(game);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool GameExists(int id)
