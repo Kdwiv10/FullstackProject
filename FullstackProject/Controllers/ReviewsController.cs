@@ -48,14 +48,13 @@ namespace FullstackProject.Controllers
         // GET: Reviews/Create
         public IActionResult Create()
         {
-            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameId");
+            // Pass game names to the view for selection in the dropdown
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "Title"); // Use Game Title for selection
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
             return View();
         }
 
         // POST: Reviews/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ReviewId,GameId,UserId,Rating,Comments")] Review review)
@@ -64,9 +63,10 @@ namespace FullstackProject.Controllers
             {
                 _context.Add(review);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); // Redirect after successful creation
             }
-            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameId", review.GameId);
+            // If something goes wrong, pass the game and user data back to the view
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "Title", review.GameId);
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", review.UserId);
             return View(review);
         }
@@ -84,14 +84,13 @@ namespace FullstackProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameId", review.GameId);
+
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "Title", review.GameId);  // Use Game Title in the dropdown
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", review.UserId);
             return View(review);
         }
 
         // POST: Reviews/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ReviewId,GameId,UserId,Rating,Comments")] Review review)
@@ -121,7 +120,7 @@ namespace FullstackProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameId", review.GameId);
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "Title", review.GameId);  // Use Game Title in the dropdown
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", review.UserId);
             return View(review);
         }

@@ -5,50 +5,51 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="~/css/Reviews.css">
+
 <h1>Reviews</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+                @Html.DisplayNameFor(model => model.First().Rating)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comments)
+                @Html.DisplayNameFor(model => model.First().Comments)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Game)
+                @Html.DisplayNameFor(model => model.First().Game)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                @Html.DisplayNameFor(model => model.First().User)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Game.GameId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ReviewId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ReviewId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ReviewId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comments)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Game.Title)  <!-- Display game title instead of GameId -->
+                </td>
+                
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ReviewId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ReviewId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ReviewId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
