@@ -8,6 +8,7 @@ namespace FullstackProject.Model
         public int MembershipId { get; set; }
         public int? UserId { get; set; }
         public string? Type { get; set; }
+        public float? DiscountRate { get; set; }
         public int? Price { get; set; }
         public string? Description { get; set; }
 
