@@ -272,6 +272,10 @@ namespace FullstackProject.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IsAvailableOnMembership")
                         .HasColumnType("text");
 
@@ -333,6 +337,9 @@ namespace FullstackProject.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<float?>("DiscountRate")
+                        .HasColumnType("real");
 
                     b.Property<int?>("Price")
                         .HasColumnType("int");
@@ -430,10 +437,6 @@ namespace FullstackProject.Migrations
 
                     b.Property<int?>("Rating")
                         .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int")

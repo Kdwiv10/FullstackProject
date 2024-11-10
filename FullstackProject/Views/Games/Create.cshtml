@@ -6,7 +6,7 @@
 
 <h1>Create a New Game</h1>
 
-<!-- Create Game Form -->
+
 <form asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="Title"></label>
@@ -34,7 +34,7 @@
 
     <div class="form-group">
         <label asp-for="ImageFileName"></label>
-        <input type="file" asp-for="ImageFileName" class="form-control" />
+        <input type="file" asp-for="ImageFileName" typeof="file" accept="image/jpeg, image/png" class="form-control" />
         <span asp-validation-for="ImageFileName" class="text-danger"></span>
     </div>
 

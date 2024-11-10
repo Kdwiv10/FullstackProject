@@ -4,10 +4,12 @@
     ViewData["Title"] = "Developer Contact Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" type="text/css" href="~/css/DeveloperContact.css">
 
+<link rel="stylesheet" type="text/css" href="~/css/Frontpage.css">
 <h1>Developer Contact Details</h1>
 
-<!-- Create New Developer Button (visible only to Admins) -->
+
 <p>
     @if (User.IsInRole("Admin"))
     {
