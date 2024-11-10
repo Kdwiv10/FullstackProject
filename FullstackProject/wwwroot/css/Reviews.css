@@ -1,9 +1,7 @@
-﻿
-/*DeveloperContact CSS 10/11/2024 Karman Dwivedi*/
-
-body {
+﻿body {
     background-color: #121212;
-    color: orange; /
+    color: orange;
+    
 }
 
 h1 {
@@ -13,13 +11,13 @@ h1 {
 
 
 table {
-    color: orange; 
+    color: orange;
 }
 
     table th, table td {
-        color: orange; 
+        color: orange;
+        table tbody tr:hover
 
-   
-    table tbody tr:hover {
-        background-color: #333333; 
-    }
+{
+    background-color: #333333;
+}

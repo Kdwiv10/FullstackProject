@@ -34,11 +34,12 @@
         }
 
         var xmlhttp = new XMLHttpRequest();
-        var url = "/Developers/IndexAjax?searchString=" + encodeURIComponent(searchString);  // Added encodeURIComponent for safer URL handling
-        xmlhttp.open("GET", url, true);  // Set to asynchronous
+        var url = "/Developers/IndexAjax?searchString=" + encodeURIComponent(searchString);
+        xmlhttp.open("GET", url, true);  // Asynchronous request
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 var response = JSON.parse(xmlhttp.responseText);
+                console.log(response);  // Log the response to the console
                 var suggestions = "";
 
                 for (var i = 0; i < response.length; i++) {
@@ -53,11 +54,11 @@
                 var container = document.getElementById("AutoSuggestContainer");
                 container.innerHTML = suggestions;
 
-                // Show container only if there are suggestions
                 container.style.display = suggestions ? "block" : "none";
             }
         };
         xmlhttp.send();
+
     }
 </script>
 

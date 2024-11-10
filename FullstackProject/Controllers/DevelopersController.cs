@@ -161,10 +161,11 @@ namespace FullstackProject.Controllers
 
             var developers = await _context.Developers
                 .Where(d => d.Name.Contains(searchString) || d.Email.Contains(searchString))
-                .Select(d => new { d.Name })
+                .Select(d => new { d.Name, d.Email })  // Include both Name and Email
                 .ToListAsync();
 
             return Json(developers);
         }
     }
-}
+    }
+

@@ -41,7 +41,10 @@
                 {
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
-                            <img src="@Url.Content("~/uploads/" + game.GameId + ".jpg")" class="card-img-top" alt="@game.Title" style="height: 200px; object-fit: cover;" />
+                            
+                            <!-- Display Game Image 10/11/24 Karman Dwivedi -->
+                            <img src="@Url.Content(game.ImageFileName)" class="card-img-top" alt="@game.Title" style="height: 200px; object-fit: cover;" onerror="this.onerror=null; this.src='/images/placeholder.jpg';" />
+
                             <div class="card-body">
                                 <h5 class="card-title">@game.Title</h5>
                                 <p class="card-text">@game.Description</p>
@@ -69,6 +72,7 @@
                             </div>
                         </div>
                     </div>
+
                 }
             }
             else
