@@ -8,7 +8,10 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create">Create New</a>
+    }
 </p>
 <table class="table">
     <thead>
@@ -41,12 +44,9 @@
             
             <td>
                     <!-- Action Links -->
-                    @if (User.IsInRole("Developer") || User.IsInRole("Admin")) // Show Edit link for Developers and Admins
+                    @if (User.IsInRole("Admin"))
                     {
                         <a asp-action="Edit" asp-route-id="@item.Type">Edit</a>
-                    }
-                    @if (User.IsInRole("Admin")) // Show Delete link only for Admins
-                    {
                         <a asp-action="Delete" asp-route-id="@item.Type">Delete</a>
                     }
                     <a asp-action="Details" asp-route-id="@item.Type">Details</a>

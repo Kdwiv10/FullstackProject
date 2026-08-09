@@ -207,6 +207,8 @@ public partial class S22024Group2ProjectContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("MembershipID");
             entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.DiscountRate).HasColumnType("float");
+            entity.Property(e => e.Price).HasColumnType("int");
             entity.Property(e => e.Type)
                 .HasMaxLength(50)
                 .IsUnicode(false);

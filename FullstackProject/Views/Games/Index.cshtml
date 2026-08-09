@@ -7,7 +7,10 @@
 <h1>Games</h1>
 
 <p>
-    <a asp-action="Create">Create New </a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-success">Create New</a>
+    }
 </p>
 
 <!-- Tabs for each Genre and All Games -->
@@ -57,18 +60,14 @@
                             </div>
                             <div class="card-footer">
                                 <!-- Action Buttons -->
-                                <a asp-action="Edit" asp-route-id="@game.GameId" class="btn btn-warning btn-sm">Edit</a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@game.GameId" class="btn btn-warning btn-sm">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@game.GameId" class="btn btn-danger btn-sm">Delete</a>
+                                }
                                 <a asp-action="Details" asp-route-id="@game.GameId" class="btn btn-info btn-sm">Details</a>
-                                <a asp-action="Delete" asp-route-id="@game.GameId" class="btn btn-danger btn-sm">Delete</a>
-                                <!-- Add to Cart button - only if available on membership -->
-                                @if (game.IsAvailableOnMembership == "Yes")
-                                {
-                                    <a asp-controller="Membership" asp-action="AddToCart" asp-route-id="@game.GameId" class="btn btn-primary btn-sm">Add To Membership</a>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-secondary btn-sm" disabled>Not Available on Membership</button>
-                                }
+                                <a asp-controller="ShoppingCart" asp-action="BuyNow" asp-route-id="@game.GameId" class="btn btn-success btn-sm">Buy Now</a>
+                                <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@game.GameId" class="btn btn-outline-primary btn-sm">Add to Cart</a>
                             </div>
                         </div>
                     </div>
@@ -106,18 +105,14 @@
                                 </div>
                                 <div class="card-footer">
                                     <!-- Action Buttons -->
-                                    <a asp-action="Edit" asp-route-id="@game.GameId" class="btn btn-warning btn-sm">Edit</a>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@game.GameId" class="btn btn-warning btn-sm">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@game.GameId" class="btn btn-danger btn-sm">Delete</a>
+                                    }
                                     <a asp-action="Details" asp-route-id="@game.GameId" class="btn btn-info btn-sm">Details</a>
-                                    <a asp-action="Delete" asp-route-id="@game.GameId" class="btn btn-danger btn-sm">Delete</a>
-                                    <!-- Add to Cart button - only if available on membership -->
-                                    @if (game.IsAvailableOnMembership == "Yes")
-                                    {
-                                        <a asp-controller="Membership" asp-action="AddToCart" asp-route-id="@game.GameId" class="btn btn-primary btn-sm">Add To Membership</a>
-                                    }
-                                    else
-                                    {
-                                        <button class="btn btn-secondary btn-sm" disabled>Not Available on Membership</button>
-                                    }
+                                    <a asp-controller="ShoppingCart" asp-action="BuyNow" asp-route-id="@game.GameId" class="btn btn-success btn-sm">Buy Now</a>
+                                    <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@game.GameId" class="btn btn-outline-primary btn-sm">Add to Cart</a>
                                 </div>
                             </div>
                         </div>
