@@ -46,8 +46,10 @@ public partial class S22024Group2ProjectContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=citizen.manukautech.info,6304;Database=S22024_Group2_Project;User Id=S22024_Group2;Password=fBit$95124;Encrypt=True;TrustServerCertificate=True;");
+    {
+        // The application supplies this context's options through dependency injection.
+        // Connection strings must be provided through user secrets or environment variables.
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

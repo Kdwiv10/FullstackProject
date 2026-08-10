@@ -35,6 +35,12 @@ bld/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
+
+# Local secrets (use .env.example as a template)
+.env
+.env.*
+!.env.example
+appsettings.Local.json
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
