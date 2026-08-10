@@ -58,26 +58,52 @@ else
     <br />
     
     <input id="GrandTotal" type="hidden" value="@ViewBag.FinalTotal" />
-    //Added thank you page after you buy a video game  Karman Dwivedi 22/11/2024
     <div id="paypal-button-container"></div>
+    <div id="paypal-error" class="alert alert-danger mt-3 d-none" role="alert"></div>
     <script src="https://www.paypal.com/sdk/js?client-id=ATNwtOFAgffDhMfTE8dGXlau9W8Gv82HLENDNmAfobf55lKFzR1u48MWIaTOK4s6V0Rancd7L8HJSox3"></script>
     <script>
+        function showPayPalError(error) {
+            console.error('PayPal checkout error:', error);
+
+            const detail = error?.details?.[0];
+            const message = detail?.description || error?.message || 'PayPal could not complete the payment. Please try again.';
+            const errorContainer = document.getElementById('paypal-error');
+
+            errorContainer.textContent = message;
+            errorContainer.classList.remove('d-none');
+        }
+
         paypal.Buttons({
             createOrder: function (data, actions) {
-                var grandTotal = parseFloat(document.getElementById("GrandTotal").value).toFixed(2).toString();
+                const total = Number.parseFloat(document.getElementById("GrandTotal").value);
+
+                if (!Number.isFinite(total) || total <= 0) {
+                    showPayPalError(new Error('Your cart total must be greater than zero.'));
+                    return Promise.reject(new Error('Invalid cart total.'));
+                }
+
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: grandTotal
+                            currency_code: 'USD',
+                            value: total.toFixed(2)
                         }
                     }]
                 });
             },
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (details) {
-                    alert('Transaction completed by ' + details.payer.name.given_name);
-                    window.location.href = '/shoppingcart/success'; // Redirect to Thank You page
+                    if (details.status !== 'COMPLETED') {
+                        throw new Error('PayPal returned payment status: ' + details.status);
+                    }
+
+                    window.location.assign('@Url.Action("Success", "ShoppingCart")');
+                }).catch(function (error) {
+                    showPayPalError(error);
                 });
+            },
+            onError: function (error) {
+                showPayPalError(error);
             }
         }).render('#paypal-button-container');
 

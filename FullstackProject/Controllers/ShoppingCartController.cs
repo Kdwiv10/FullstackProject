@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace FullstackProject.Controllers;
-
 public class ShoppingCartController : Controller
 {
     private readonly S22024Group2ProjectContext _context;
@@ -114,8 +112,7 @@ public class ShoppingCartController : Controller
         SaveCartItems(new List<CartItem>());
         return RedirectToAction("Index");
     }
-
-    //Added a success page where it returns thank you view Karman Dwivedi 22/11/24
+    //Added a success page where it returns thank you view  Karman Dwivedi 22/11/24
     public IActionResult Success()
     {
         return View("Thankyou");
