@@ -1,4 +1,4 @@
-namespace FullstackProject.Models
+namespace FullStack_Shangri.Models
 {
     public class ErrorViewModel
     {

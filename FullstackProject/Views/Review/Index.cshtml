@@ -1,0 +1,44 @@
+﻿@model IEnumerable<FullStack_Shangri.Models.Review>
+
+@{
+    ViewData["Title"] = "Reviews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Review</h1>
+@* Made review page 12/11/24 Karman Dwivedi *@
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.UserId)</th>
+            <th>@Html.DisplayNameFor(model => model.Rating)</th>
+            <th>@Html.DisplayNameFor(model => model.Comments)</th>
+            <th>@Html.DisplayNameFor(model => model.Game)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.UserId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Rating)</td>
+                <td>@Html.DisplayFor(modelItem => item.Comments)</td>
+                <td>@Html.DisplayFor(modelItem => item.Game.Title)</td>
+                <td>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Developer"))
+                    {
+                        <span>
+                            <a asp-action="Edit" asp-route-id="@item.ReviewId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.ReviewId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ReviewId">Delete</a>
+                        </span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>
+    <a asp-action="Create" class="btn btn-primary btn-sm">Make Review</a>
+</p>

@@ -1,0 +1,64 @@
+﻿@model FullStack_Shangri.Models.Review
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Review</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ReviewId" class="control-label">ReviewId</label>
+                <input asp-for="ReviewId" class="form-control" />
+                <span asp-validation-for="ReviewId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GameId" class="control-label">Game</label>
+                <select asp-for="GameId" class="form-control" asp-items="ViewBag.GameId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label">Enter Your ID</label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label">Rate Out of 10</label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comments" class="control-label"></label>
+                <textarea asp-for="Comments" class="form-control" id="Comments"></textarea>
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.tiny.cloud/1/hpwii6rcr0do3nxqjezp565ez6m50hdscws6jbkcbxbor0qk/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#Comments',
+            plugins: 'lists link image table code',
+            toolbar: 'undo redo | bold italic underline | bullist numlist | link image | code',
+            height: 300
+        });
+    </script>
+}

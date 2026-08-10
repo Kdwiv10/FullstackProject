@@ -1,15 +1,5 @@
-
-.game-card {
-    border: 2px solid orange;
-    border-radius: 5px;
-}
-
-h2 {
-    color: orange;
-}
-
 html {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -31,21 +21,32 @@ body {
   margin-bottom: 60px;
 }
 
-p{
-    font-size:medium 50px;
+.nav-link {
+    position: relative;
+    text-decoration: none;
 }
 
-.navbar-custom {
-    background-color: #333; /* greyish black */
-    overflow: hidden;
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    background-color: orange;
+    left: 50%;
+    bottom: 0;
+    transition: width 0.3s ease, left 0.3s ease;
 }
 
-    .navbar-custom .navbar-brand,
-    .navbar-custom .navbar-nav .nav-link {
-        color: orange !important; /* make text orange */
-        font-weight: bold;
-    }
+.nav-link:hover::after {
+    width: 100%;
+    left: 0;
+}
 
-        .navbar-custom .navbar-nav .nav-link:hover {
-            color: #ff8c00; /* optional, darker orange for hover effect */
-        }
+h1, h2, h3, h4, h5, h6 {
+    color: orange;
+}
+
+/* Search Section */
+.search-button {
+    margin-left: 10px;
+}

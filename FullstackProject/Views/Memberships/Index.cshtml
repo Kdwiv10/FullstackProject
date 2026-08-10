@@ -1,18 +1,28 @@
-﻿@model IEnumerable<FullstackProject.Model.Membership>
+﻿@model IEnumerable<FullStack_Shangri.Models.Memberships>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Memberships";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@* Made memberships page 17/11/24 Kanemana Witana *@
+<h1>Memberships</h1>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a> 
+    </p>
+}
 
-<h1>Index</h1>
-
-<p>
-    @if (User.IsInRole("Admin"))
+<div class="text-black">
+    @if (ViewData["MembershipTimeLeft"] != null)
     {
-        <a asp-action="Create">Create New</a>
+        <span style="font-weight: bold;">Current Membership Expires In: @ViewData["MembershipTimeLeft"] days</span>
+    }else
+    {
+        <span style="font-weight: bold;">No Current Membership</span>
     }
-</p>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +35,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountRate)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -41,16 +53,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            
             <td>
-                    <!-- Action Links -->
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Type">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Type">Delete</a>
-                    }
-                    <a asp-action="Details" asp-route-id="@item.Type">Details</a>
-                </td>
+                @Html.DisplayFor(modelItem => item.DiscountRate)
+            </td>
+                @if (User.IsInRole("Admin"))
+                {
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MembershipId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MembershipId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MembershipId">Delete</a>
+            </td>
+                }
+
         </tr>
 }
     </tbody>

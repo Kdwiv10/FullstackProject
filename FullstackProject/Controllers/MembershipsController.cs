@@ -5,28 +5,49 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FullstackProject.Model;
+using FullStack_Shangri.Models;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
-namespace FullstackProject.Controllers
+namespace FullStack_Shangri.Controllers
 {
     public class MembershipsController : Controller
     {
-        private readonly S22024Group2ProjectContext _context;
+    private readonly S22024Group2ProjectContext _context;
 
-        public MembershipsController(S22024Group2ProjectContext context)
-        {
-            _context = context;
-        }
+    public MembershipsController(S22024Group2ProjectContext context)
+    {
+        _context = context;
+    }
+
+        // 27/10/2024 Kanemana Witana: Created and dsiplayed the Memberships
 
         // GET: Memberships
         public async Task<IActionResult> Index()
         {
-            var s22024Group2ProjectContext = _context.Memberships.Include(m => m.User);
-            return View(await s22024Group2ProjectContext.ToListAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var userMembership = await _context.UserMembership
+                    .FirstOrDefaultAsync(um => um.UserId == userId);
+
+                if (userMembership != null)
+                {
+                    var remainingDays = (userMembership.MembershipExpiryDate - DateTime.Now).Days;
+                    ViewData["MembershipTimeLeft"] = remainingDays > 0 ? remainingDays : 0;
+                }
+                else
+                {
+                    ViewData["MembershipTimeLeft"] = "No active membership";
+                }
+            }
+
+            return View(await _context.Memberships.ToListAsync());
         }
 
         // GET: Memberships/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,7 +56,6 @@ namespace FullstackProject.Controllers
             }
 
             var membership = await _context.Memberships
-                .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.MembershipId == id);
             if (membership == null)
             {
@@ -49,7 +69,6 @@ namespace FullstackProject.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
             return View();
         }
 
@@ -58,7 +77,7 @@ namespace FullstackProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MembershipId,UserId,Type,Price,Description")] Membership membership)
+        public async Task<IActionResult> Create([Bind("MembershipId,Type,Price,Description,DiscountRate")] Memberships membership)
         {
             if (ModelState.IsValid)
             {
@@ -66,11 +85,11 @@ namespace FullstackProject.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", membership.UserId);
             return View(membership);
         }
 
         // GET: Memberships/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,7 +102,6 @@ namespace FullstackProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", membership.UserId);
             return View(membership);
         }
 
@@ -92,7 +110,7 @@ namespace FullstackProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MembershipId,UserId,Type,Price,Description")] Membership membership)
+        public async Task<IActionResult> Edit(int id, [Bind("MembershipId,Type,Price,Description,DiscountRate")] Memberships membership)
         {
             if (id != membership.MembershipId)
             {
@@ -119,11 +137,11 @@ namespace FullstackProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", membership.UserId);
             return View(membership);
         }
 
         // GET: Memberships/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,7 +150,6 @@ namespace FullstackProject.Controllers
             }
 
             var membership = await _context.Memberships
-                .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.MembershipId == id);
             if (membership == null)
             {

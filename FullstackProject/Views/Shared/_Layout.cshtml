@@ -3,50 +3,82 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] | Shangri</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - FullStack_Shangri</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/FullstackProject.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FullStack_Shangri.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light navbar-custom  box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-toggleable-sm bg-primary navbar-dark border-bottom box-shadow mb-3" data-bs-theme="dark">
             <div class="container-fluid">
-                <!-- Set the navbar title to orange 7/11/2024 Karman Dwivedi -->
-                <a class="navbar-brand text-orange" asp-area="" asp-controller="Home" asp-action="Index">Shangri</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/Shangri - Logo.png" alt="Logo" style="height: 40px;">
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <!-- Set the navbar links to orange -->
                         <li class="nav-item">
-                            <a class="nav-link text-orange" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Developer"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Genre" asp-action="Index">Genre</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Game" asp-action="Index">Shop</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-orange" asp-area="" asp-controller="Games" asp-action="Index">Store</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Review" asp-action="Index">Reviews</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-orange" asp-area="" asp-controller="Memberships" asp-action="Index">Memberships</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Memberships" asp-action="Index">Memberships</a>
                         </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Developer"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Developer" asp-action="Index">Developers</a>
+                            </li>
+                        }
+                        </li>
+
+                        <!--Admin Dropdown Menu-->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Index">
+                                            <i class="fas fa-users-cog"></i> Manage Roles
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Users">
+                                            <i class="fas fa-users"></i> Manage Users
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        <!-------------------------->
                         <li class="nav-item">
-                            <a class="nav-link text-orange" asp-area="" asp-controller="ShoppingCart" asp-action="Index">Shopping Cart</a>
+                            <a class="nav-link" asp-controller="Game" asp-action="TopTen">Top Ten Games</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-orange" asp-area="" asp-controller="Developers" asp-action="Index">Developers Contact details</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-orange" asp-area="" asp-controller="Reviews" asp-action="Index">Reviews</a>
-                        </li>
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
-
     </header>
-
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -54,8 +86,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container" style="text-align:center;">
-            &copy; 2024 - FullstackProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container">
+            &copy; 2024 - FullStack_Shangri - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

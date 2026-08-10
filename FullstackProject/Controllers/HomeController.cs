@@ -1,8 +1,8 @@
-using FullstackProject.Models;
+using FullStack_Shangri.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace FullstackProject.Controllers
+namespace FullStack_Shangri.Controllers
 {
     public class HomeController : Controller
     {

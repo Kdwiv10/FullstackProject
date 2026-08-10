@@ -1,0 +1,49 @@
+﻿@model FullStack_Shangri.Models.AssignRoleViewModel
+
+@{
+    ViewData["Title"] = "Assign Roles";
+}
+<h2>Assign Roles to @Model.UserName</h2>
+
+
+<form asp-action="AssignRole" method="post" class="mt-3">
+   
+    <input type="hidden" asp-for="UserId" />
+
+  
+    <div class="form-group">
+        @foreach (var role in Model.Roles)
+
+        {
+            <div class="form-check">
+               
+                <input type="checkbox" class="form-check-input" name="SelectedRoleIds" value="@role.Name"
+                @(Model.SelectedRoleIds.Contains(role.Name) ? "checked" : "") />
+           
+                <label class="form-check-label">@role.Name</label>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        <i class="fas fa-save"></i> Save Changes
+    </button>
+   
+    <a asp-action="Users" class="btn btn-secondary">Cancel</a>
+</form>
+
+
+
+@if (!ViewData.ModelState.IsValid)
+
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}

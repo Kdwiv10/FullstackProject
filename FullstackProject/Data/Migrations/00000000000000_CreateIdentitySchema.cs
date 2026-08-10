@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace FullstackProject.Data.Migrations
+namespace FullStack_Shangri.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

@@ -1,0 +1,31 @@
+﻿@model IEnumerable<FullStack_Shangri.Models.Game>
+
+@{
+    ViewData["Title"] = "Top Ten Games";
+}
+
+<h2>Top Ten Games</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Developer</th>
+            <th>Price</th>
+            <th>Release Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <td>@game.Title</td>
+                <td>@game.Genre?.Name</td>
+                <td>@game.Developer?.Name</td>
+                <td>@(game.Price?.ToString("C") ?? "N/A")</td>
+                <td>@(game.ReleaseDate.HasValue ? game.ReleaseDate.Value.ToString("yyyy-MM-dd") : "N/A")</td>
+            </tr>
+        }
+    </tbody>
+</table>

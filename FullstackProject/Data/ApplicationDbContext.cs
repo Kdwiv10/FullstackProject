@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FullstackProject.Data
+namespace FullStack_Shangri.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
